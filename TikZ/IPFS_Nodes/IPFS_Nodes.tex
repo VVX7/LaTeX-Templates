@@ -1,0 +1,89 @@
+%    A LaTeX template for IPFS nodes.
+%    Copyright (C) 2019  Roger Johnston
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your oemion) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{shapes, external}
+\tikzexternalize[prefix=figures/]
+\PreviewEnvironment{tikzpicture}
+\tikzset{external/force remake=true}
+
+%\setlength\PreviewBorder{7pt}
+\definecolor{pinegreen}{cmyk}{0.92,0,0.59,0.25}
+\definecolor{royalblue}{cmyk}{1,0.50,0,0}
+\definecolor{lavander}{cmyk}{0,0.48,0,0}
+\definecolor{violet}{cmyk}{0.79,0.88,0,0}
+\tikzstyle{cblue}=[circle, draw, thin,fill=cyan!20, scale=0.8]
+\tikzstyle{cgreen}=[circle, draw, thin,fill=pinegreen!20, scale=0.8]
+\tikzstyle{cred}=[circle, draw, thin,fill=red!20, scale=0.8]
+\tikzstyle{crblue}=[circle, draw, thin,fill=royalblue!20, scale=0.8]
+\tikzstyle{cviolet}=[circle, draw, thin,fill=violet!20, scale=0.8]
+\tikzstyle{qgre}=[rectangle, draw, thin,fill=green!20, scale=0.8]
+\tikzstyle{rpath}=[ultra thick, red, opacity=0.4]
+\tikzstyle{legend_isps}=[rectangle, rounded corners, thin,
+                       fill=gray!20, text=blue, draw]
+
+
+\begin{document}
+
+\tikzsetnextfilename{importantFigure}
+\begin{tikzpicture}[auto, thick]
+
+\foreach \place/\x in {
+	{(-2.6,0.4)/1},
+	{(-1.65,-0.55)/2},
+	{(-2.1,0.66)/3},
+	{(-0.95,-0.9)/4},
+	{(-0.45,0)/5},
+	{(0.25,0.7)/6},
+	{(0.75,-0.8)/7},
+	{(1.9,0)/8},
+	{(2.2,0.4)/9},
+	{(0.95,-0.2)/10},
+	{(1.7,-0.8)/11},
+	{(-0.3,-0.6)/12}}
+\node[cblue] (a\x) at \place {\x};
+
+\node[cviolet] (12) at (-0.3,-0.6) {12};
+\node[cviolet] (3) at (-2.1,0.66) {3};
+\node[cviolet] (4) at (-0.95,-0.9) {4};
+\node[cred] (5) at (-0.45,0) {5};
+
+% % Physical layer links
+\path[thin] (a1) edge (a2);
+\path[thin] (a1) edge (a3);
+\path[thin] (a2) edge (a3);
+\path[thin] (a3) edge (a6);
+\path[thin] (a2) edge (a4);
+\path[->] (a5) edge (a6);
+\path[->] (a5) edge (a4);
+\path[->] (a5) edge (a2);
+\path[->] (a5) edge (a7);
+\path[thin] (a6) edge (a7);
+\path[thin] (a6) edge (a9);
+\path[thin] (a6) edge (a8);
+\path[thin] (a8) edge (a9);
+\path[thin] (a7) edge (a8);
+\path[thin] (a8) edge (a9);
+\path[thin] (a8) edge (a10);
+\path[thin] (a11) edge (a10);
+\path[thin] (a12) edge (a7);
+\path[thin] (a12) edge (a10);
+
+\end{tikzpicture}
+
+\end{document}

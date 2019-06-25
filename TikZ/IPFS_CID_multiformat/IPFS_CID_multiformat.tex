@@ -1,0 +1,93 @@
+%    A LaTeX template for IPFS CID Multiformats.
+%    Copyright (C) 2019  Roger Johnston
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\usetikzlibrary{shapes, external, positioning, backgrounds}
+
+% Set monospace global font Inconsolata.
+\usepackage{inconsolata}
+\renewcommand{\familydefault}\ttdefault
+
+% Export TikZ image without page body.
+\tikzexternalize[prefix=figures/]
+\PreviewEnvironment{tikzpicture}
+\tikzset{external/force remake=true}
+
+\begin{document}
+
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[->,auto,thick,
+		minimum height=2em,minimum width=5em,show background rectangle,background rectangle/.style={fill=white,draw=none}]
+
+		\tikzstyle{list}=[rectangle,draw,fill=cyan!20,rounded corners=.8ex];
+		\tikzstyle{tree}=[rectangle,draw,fill=green!20,rounded corners=.8ex];
+		\tikzstyle{commit}=[rectangle,draw,fill=magenta!20,rounded corners=.8ex];
+		\tikzstyle{data}=[rectangle,draw,fill=blue!20,rounded corners=.8ex];
+		\tikzstyle{every path}=[draw]
+
+		% CID root
+		\node[commit] (cid) {CID};
+
+		% multiformat objects
+		\node[tree]   (cidversion) [below left=3em and 3em of cid] {cid-version};
+		\node[tree]   (multicodec) [below right=3em and 3em of cid] {multicodec};
+		\node[tree]   (multibase) [left=3em of cidversion] {\texttt{multibase}};
+		\node[tree]   (multihash) [right=3em of multicodec] {multihash};
+
+		% multibase fields
+		\node[list]  (baseencoding) [below=1em of multibase] {base-encoding};
+		\node[data]  (basedata) [below=1em of baseencoding] {encoded-data};
+
+		% cid-version fields
+		\node[list]  (varint) [below=1em of cidversion] {varint};
+
+		% multicode fields
+		\node[list]  (codec) [below=1em of multicodec] {codec};
+		\node[data]  (codecdata) [below=1em of codec] {encoded-data};
+
+		% multihash fields
+		\node[list]  (hashalgo) [below=1em of multihash] {hash-function};
+		\node[list]  (hashsize) [below=1em of hashalgo] {digest-size};
+		\node[data]  (hashvalue) [below=1em of hashsize] {message-digest};
+
+		% connect the nodes
+		\path[every node/.style={font=\sffamily\small}]
+		(cid) edge[out=-90,in=90] (multicodec)
+		(cid) edge[out=-90,in=90] (multibase)
+		(cid) edge[out=-90,in=90] (cidversion)
+		(cid) edge[out=-90,in=90] (multihash)
+
+		(multihash) edge[out=0,in=0] (hashvalue)
+		(multihash) edge[out=0,in=0] (hashsize)
+		(multihash) edge[out=0,in=0] (hashalgo)
+
+		(multicodec) edge[out=180,in=180] (codec)
+		(multicodec) edge[out=180,in=180] (codecdata)
+
+		(cidversion) edge[out=0,in=0] (varint)
+
+		(multibase) edge[out=180,in=180] (basedata)
+		(multibase) edge[out=180,in=180] (baseencoding)
+		;
+
+		\end{tikzpicture}
+
+	\end{figure}
+
+\end{document}

@@ -1,0 +1,112 @@
+%    A LaTeX template for IPFS CIDv0.
+%    Copyright (C) 2019  Roger Johnston
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your oemion) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+\documentclass{standalone}
+\usepackage{graphicx,tikz}
+\usetikzlibrary{calc,positioning,shapes,decorations.pathreplacing,backgrounds}
+
+% Set monospace global font Inconsolata.
+\usepackage{inconsolata}
+\renewcommand{\familydefault}\ttdefault
+
+% the styles for short and long nodes
+\tikzset{
+	char/.style={draw,rectangle,text height=1em,text depth=1em,text width=1.5em,align=center,fill=cyan!20},
+	short/.style={draw,rectangle,text height=1em,text depth=1em,text width=2em,align=center,fill=gray!30},
+	int/.style={draw,rectangle,text height=1em,text depth=1em,text width=4em,align=center,fill=gray!30},
+	long/.style={short,text height=1em,text depth=1em,align=center,text width=8em},
+	hash/.style={draw,text height=1em,text depth=1em,align=center,text width=61em,,fill=blue!20},
+	ghost/.style={rectangle,text height=1em,text depth=1em,text width=1em,align=center,fill=white}	
+}
+
+% the short nodes \shnode{<label>}{<right of>}{<text>}
+\def\chnode#1#2#3{%
+	\node[char,right=of #1] (#2) {#3}}
+
+% the short nodes \shnode{<label>}{<right of>}{<text>}
+\def\shnode#1#2#3{%
+	\node[short,right=of #1] (#2) {\rotatebox{270}{#3}}}
+
+% the short nodes \shnode{<label>}{<right of>}{<text>}
+\def\inode#1#2#3{%
+	\node[int,right=of #1] (#2) {#3}}
+
+% the long nodes \lnode{<label>}{<right of>}
+\def\lnode#1#2#3{%
+	\node[long,right=of #1] (#2) {#3}}
+
+% the long nodes \lnode{<label>}{<right of>}
+\def\hnode#1#2#3{%
+	\node[hash,right=of #1] (#2) {#3}}
+
+
+
+\begin{document}
+	
+	\noindent\begin{tikzpicture}[node distance=-\pgflinewidth,show background rectangle,background rectangle/.style={fill=white,draw=none}]
+	
+	
+	\node[ghost] (a) {};
+	
+	\chnode{a}{b}{fn};
+	\chnode{b}{c}{len};
+	\hnode{c}{d}{message digest};
+	
+	\node[ghost,right=of d] (e) {};
+	
+	\node[ghost,below=of a] (a2) {};
+	\node[char,below=of b] (b2) {12};
+	\chnode{b2}{c2}{20};
+	\hnode{c2}{d2}{f1 85 7e b6 31 09 b5 b3 97 56 84 64 98 b8 ef 19 1c d7 a6 96 87 c9 dd b3 fb 99 16 c0 1a c9 f3 62};
+	\node[ghost,right=of d2] (e2) {};
+	
+	\draw[decorate,decoration={brace,raise=.2em},thick] (b.north west) -- node[above right=.2em] {\rotatebox{45}{Hash Function}} (b.north east);
+	\draw[decorate,decoration={brace,raise=.2em},thick] (c.north west) -- node[above right=.2em] {\rotatebox{45}{Digest Length}} (c.north east);
+	
+%	\draw[<->] ( $ (g.south east) +(0,-0.6cm) $ ) -- node[fill=white] {CID v0} ( $ (h.south west) +(0,-0.6cm) $ );
+	\draw[|<->|,thick] ( $ (a2.south east) +(0,-0.6cm) $ ) -- node[fill=white] {CID v0} ( $ (e2.south west) +(0,-0.6cm) $ );
+	
+	%	\node[ghost] (a) {};
+	%	\shnode{a}{b}{src};
+	%	\shnode{b}{c}{dst};
+	%	\shnode{c}{d}{len};
+	%	\lnode{d}{e};
+	%	\lnode{e}{f};
+	%	\node[long,draw=none,fill=none,right=of f,text height=0em,text depth=0em,text width=1cm] (g) {$\ldots$};
+	%	\node[long,right=of g,label=center:$b$ bits] (h) {};
+	%	\lnode{h}{i};
+	%	\shnode{i}{j}{len};
+	%	\shnode{j}{k}{dst};
+	%	\shnode{k}{l}{src};
+	%	\node[ghost,right=of l] (m) {};
+	%	
+	%%	\node[above right=1cm of a] (ppre) {Packet preamble};
+	%%	\node[above left=1cm of m] (ppos) {Packet postamble};
+	%	
+	%	\draw[decorate,decoration={brace,raise=2em}] (b.north west) -- node[above=4em] {Header} (d.north east);
+	%	\draw[decorate,decoration={brace,raise=2em}] (j.north west) -- node[above=4em] {Trailer} (l.north east);
+	%	\draw[decorate,decoration={brace,raise=2em}] (h.north west) -- node[above=4em] {Codeword} (h.north east);
+	%%	\draw (ppre.west) -- +(-20em,0em) -- (a.north);
+	%%	\draw (ppos.east) -- +(20em,0em) -- (m.north);
+	%	\draw (a.south east) -- +(0,-1.2cm);
+	%	\draw (m.south west) -- +(0,-1.2cm);
+	%	\draw[<->] ( $ (a.south east) +(0,-0.6cm) $ ) -- node[fill=white] {$S/B$ Codewords} ( $ (m.south west) +(0,-0.6cm) $ );
+	%	\draw[,dotted] (f.north east) -- (h.north west);
+	%	\draw[dotted] (f.south east) -- (h.south west);
+	
+	\end{tikzpicture}
+	
+\end{document}
